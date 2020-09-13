@@ -11,8 +11,12 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
-Vue.prototype.switchLang = function(chinese = '', english = '') {
+Vue.prototype.$tt = function(chinese = '', english = '') {
 	return this.$t('options.option', { label: this.$i18n.locale == 'zh' ? chinese : english })
+}
+
+Vue.prototype.$ttt = function({ label, labelEN }) {
+	return this.$tt(label, labelEN)
 }
 
 new Vue({

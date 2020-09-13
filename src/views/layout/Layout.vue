@@ -3,7 +3,9 @@
 		<el-aside width="200px" style="background-color: rgb(238, 241, 246)">
 			<el-menu :default-openeds="['1', '3']">
 				<el-submenu index="1">
-					<template slot="title"> <i class="el-icon-message"></i>导航一 </template>
+					<template slot="title">
+						<i class="el-icon-message"></i>导航一
+					</template>
 					<el-menu-item-group>
 						<el-menu-item index="1-1">选项1</el-menu-item>
 						<el-menu-item index="1-2">选项2</el-menu-item>
@@ -29,13 +31,12 @@
 							<el-dropdown-item>删除</el-dropdown-item>
 						</el-dropdown-menu>
 					</el-dropdown>
-					<span>王小虎</span> -->
+					<span>王小虎</span>-->
 				</div>
 
 				<div>
 					<el-select v-model="value" placeholder="请选择语言">
-						<el-option v-for="item in lang" :key="item.value" :label="switchLang(item.label, item.labelEN)" :value="item.value">
-						</el-option>
+						<el-option v-for="item in lang" :key="item.value" :label="$ttt(item)" :value="item.value"></el-option>
 					</el-select>
 				</div>
 			</el-header>
@@ -67,15 +68,15 @@ export default {
 		return {
 			value: this.$i18n.locale,
 			lang: [
-				{ value: 'zh', label: '中文', labelEN: 'Chinese' },
-				{ value: 'en', label: '英文', labelEN: 'English' }
+				{ value: "zh", label: "中文", labelEN: "Chinese" },
+				{ value: "en", label: "英文", labelEN: "English" }
 			]
-		}
+		};
 	},
 	watch: {
 		value(value) {
-			this.$i18n.locale = value
+			this.$i18n.locale = value;
 		}
 	}
-}
+};
 </script>
