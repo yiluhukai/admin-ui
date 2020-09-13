@@ -1,0 +1,81 @@
+<template>
+	<el-container style="border: 1px solid #eee">
+		<el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+			<el-menu :default-openeds="['1', '3']">
+				<el-submenu index="1">
+					<template slot="title"> <i class="el-icon-message"></i>导航一 </template>
+					<el-menu-item-group>
+						<el-menu-item index="1-1">选项1</el-menu-item>
+						<el-menu-item index="1-2">选项2</el-menu-item>
+					</el-menu-item-group>
+					<el-menu-item-group title="分组2">
+						<el-menu-item index="1-3">选项3</el-menu-item>
+					</el-menu-item-group>
+					<el-submenu index="1-4">
+						<template slot="title">选项4</template>
+						<el-menu-item index="1-4-1">选项4-1</el-menu-item>
+					</el-submenu>
+				</el-submenu>
+			</el-menu>
+		</el-aside>
+
+		<el-container>
+			<el-header style="text-align: right; font-size: 12px">
+				<div style="margin-right:30px">
+					<!-- <el-dropdown>
+						<el-dropdown-menu slot="dropdown">
+							<el-dropdown-item>查看</el-dropdown-item>
+							<el-dropdown-item>新增</el-dropdown-item>
+							<el-dropdown-item>删除</el-dropdown-item>
+						</el-dropdown-menu>
+					</el-dropdown>
+					<span>王小虎</span> -->
+				</div>
+
+				<div>
+					<el-select v-model="value" placeholder="请选择语言">
+						<el-option v-for="item in lang" :key="item.value" :label="switchLang(item.label, item.labelEN)" :value="item.value">
+						</el-option>
+					</el-select>
+				</div>
+			</el-header>
+			<el-main>
+				<router-view></router-view>
+			</el-main>
+		</el-container>
+	</el-container>
+</template>
+<style>
+.el-header {
+	background-color: #b3c0d1;
+	color: #333;
+	line-height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.el-aside {
+	color: #333;
+	height: 100vh;
+}
+</style>
+
+<script>
+export default {
+	data() {
+		return {
+			value: this.$i18n.locale,
+			lang: [
+				{ value: 'zh', label: '中文', labelEN: 'Chinese' },
+				{ value: 'en', label: '英文', labelEN: 'English' }
+			]
+		}
+	},
+	watch: {
+		value(value) {
+			this.$i18n.locale = value
+		}
+	}
+}
+</script>
