@@ -25,8 +25,8 @@
 				></el-date-picker>
 			</div>
 		</div>
-		<el-table :data="tableData">
-			<el-table-column prop="date" :label="$tt('日期','date')" width="140"></el-table-column>
+		<el-table :data="tableData" row-key="id">
+			<el-table-column prop="date" :label="$tt('日期', 'date')" width="140"></el-table-column>
 			<el-table-column prop="name" :label="$t('table.name')" width="120"></el-table-column>
 			<el-table-column prop="address" :label="$t('table.address')"></el-table-column>
 		</el-table>
@@ -35,15 +35,48 @@
 
 <script>
 import { GetRecords } from "@/api/login";
+import Sortable from "sortablejs";
 export default {
 	data() {
-		const item = {
-			date: "2016-05-02",
-			name: "王小虎",
-			address: "上海市普陀区金沙江路 1518 弄"
-		};
 		return {
-			tableData: Array(20).fill(item),
+			tableData: [
+				{
+					date: "2016-05-02",
+					name: "王小虎",
+					address: "上海市普陀区金沙江路 1518 弄",
+					id: 1
+				},
+				{
+					date: "2016-05-02",
+					name: "李二狗",
+					address: "上海市普陀区金沙江路 1518 弄",
+					id: 2
+				},
+				{
+					date: "2016-05-02",
+					name: "李向前",
+					address: "上海市普陀区金沙江路 1518 弄",
+					id: 3
+				},
+				{
+					date: "2016-05-02",
+					name: "王小虎---",
+					address: "上海市普陀区金沙江路 1518 弄",
+					id: 5
+				},
+				{
+					date: "2016-05-02",
+					name: "李二狗123",
+					address: "上海市普陀区金沙江路 1518 弄",
+					id: 4
+				},
+				{
+					date: "2016-05-02",
+					name: "李向前aaa",
+					address: "上海市普陀区金沙江路 1518 弄",
+					id: 6
+				}
+			],
 			options: [
 				{
 					value: "选项1",
@@ -83,7 +116,34 @@ export default {
 		searchList(val, name) {
 			console.log(val, name);
 			this.tableData.splice(1, 10);
+		},
+		columnDrop() {
+			const wrapperTr = document.querySelector(
+				".el-table__header-wrapper tr"
+			);
+			this.sortable = Sortable.create(wrapperTr, {
+				animation: 180,
+				delay: 0,
+				onEnd: evt => {
+					const oldItem = this.dropCol.splice(evt.oldIndex, 1)[0];
+					this.dropCol.splice(evt.newIndex, 0, oldItem);
+				}
+			});
+		},
+		rowDrop() {
+			//	需要添加row-key
+			const el = document.getElementsByTagName("tbody")[0];
+			Sortable.create(el, {
+				onEnd: (/**Event*/ evt) => {
+					const tempIndex = this.tableData.splice(evt.oldIndex, 1)[0];
+					this.tableData.splice(evt.newIndex, 0, tempIndex);
+				}
+			});
 		}
+	},
+	mounted() {
+		this.columnDrop();
+		this.columnDrop();
 	}
 };
 </script>
