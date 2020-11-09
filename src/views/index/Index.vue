@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { GetRecords } from "@/api/login";
+//import { GetRecords } from "@/api/login";
 import Sortable from "sortablejs";
 export default {
 	data() {
@@ -109,7 +109,8 @@ export default {
 	computed: {},
 
 	created() {
-		GetRecords({}).then(data => (this.tableData = data));
+		//GetRecords({}).then(data => (this.tableData = data));
+		localStorage.removeItem("upadte_riskId");
 	},
 
 	methods: {
@@ -117,19 +118,19 @@ export default {
 			console.log(val, name);
 			this.tableData.splice(1, 10);
 		},
-		columnDrop() {
-			const wrapperTr = document.querySelector(
-				".el-table__header-wrapper tr"
-			);
-			this.sortable = Sortable.create(wrapperTr, {
-				animation: 180,
-				delay: 0,
-				onEnd: evt => {
-					const oldItem = this.dropCol.splice(evt.oldIndex, 1)[0];
-					this.dropCol.splice(evt.newIndex, 0, oldItem);
-				}
-			});
-		},
+		// columnDrop() {
+		// 	const wrapperTr = document.querySelector(
+		// 		".el-table__header-wrapper tr"
+		// 	);
+		// 	this.sortable = Sortable.create(wrapperTr, {
+		// 		animation: 180,
+		// 		delay: 0,
+		// 		onEnd: evt => {
+		// 			const oldItem = this.dropCol.splice(evt.oldIndex, 1)[0];
+		// 			this.dropCol.splice(evt.newIndex, 0, oldItem);
+		// 		}
+		// 	});
+		// },
 		rowDrop() {
 			//	需要添加row-key
 			const el = document.getElementsByTagName("tbody")[0];
@@ -137,13 +138,21 @@ export default {
 				onEnd: (/**Event*/ evt) => {
 					const tempIndex = this.tableData.splice(evt.oldIndex, 1)[0];
 					this.tableData.splice(evt.newIndex, 0, tempIndex);
+
+					localStorage.setItem("upadte_riskId", "123");
 				}
 			});
 		}
 	},
 	mounted() {
-		this.columnDrop();
-		this.columnDrop();
+		//this.columnDrop();
+		this.rowDrop();
+
+		window.addEventListener("storage", function(e) {
+			if (e.newValue === "123" && e.key === "upadte_riskId") {
+				window.location.reload();
+			}
+		});
 	}
 };
 </script>
