@@ -20,7 +20,8 @@
 					</template>
 					<el-menu-item-group>
 						<!-- <span slot="title">表格</span> -->
-						<el-menu-item index="/dashboard">表格</el-menu-item>
+						<el-menu-item index="/dashboard">员工</el-menu-item>
+						<el-menu-item index="/departments">部门</el-menu-item>
 					</el-menu-item-group>
 				</el-submenu>
 
@@ -101,24 +102,24 @@ export default {
 		return {
 			value: this.$i18n.locale,
 			lang: [
-				{ value: 'zh', label: '中文', labelEN: 'Chinese' },
-				{ value: 'en', label: '英文', labelEN: 'English' }
+				{ value: "zh", label: "中文", labelEN: "Chinese" },
+				{ value: "en", label: "英文", labelEN: "English" }
 			],
 			isCollapse: false
-		}
+		};
 	},
 	watch: {
 		value(value) {
-			this.$i18n.locale = value
+			this.$i18n.locale = value;
 		}
 	},
 	methods: {
 		handleOpen(key, keyPath) {
-			console.log(key, keyPath)
+			console.log(key, keyPath);
 		},
 		handleClose(key, keyPath) {
-			console.log(key, keyPath)
+			console.log(key, keyPath);
 		}
 	}
-}
+};
 </script>

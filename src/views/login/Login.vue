@@ -22,25 +22,43 @@
 	</div>
 </template>
 <script>
-import { UserLogin } from '@/api/login'
+import { UserLogin } from "@/api/index";
 export default {
 	data() {
 		return {
 			form: {
-				username: '',
-				password: ''
+				username: "",
+				password: ""
 			},
 			rules: {
 				username: [
-					{ required: true, message: '请输入你的名称', trigger: 'blur' },
-					{ min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+					{
+						required: true,
+						message: "请输入你的名称",
+						trigger: "blur"
+					},
+					{
+						min: 3,
+						max: 5,
+						message: "长度在 3 到 5 个字符",
+						trigger: "blur"
+					}
 				],
 				password: [
-					{ required: true, message: '请输入你的密码', trigger: 'blur' },
-					{ min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+					{
+						required: true,
+						message: "请输入你的密码",
+						trigger: "blur"
+					},
+					{
+						min: 3,
+						max: 5,
+						message: "长度在 3 到 5 个字符",
+						trigger: "blur"
+					}
 				]
 			}
-		}
+		};
 	},
 
 	methods: {
@@ -48,16 +66,16 @@ export default {
 			this.$refs[formName].validate(valid => {
 				if (valid) {
 					UserLogin({ ...this.form }).then(res => {
-						console.log(res)
-					})
+						console.log(res);
+					});
 				} else {
-					console.log('error submit!!')
-					return false
+					console.log("error submit!!");
+					return false;
 				}
-			})
+			});
 		}
 	}
-}
+};
 </script>
 
 <style lang="scss" scoped>

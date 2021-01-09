@@ -19,7 +19,11 @@ const router = new VueRouter({
 			children: [
 				{
 					path: '',
-					component: () => import('@/views/index/Index.vue')
+					component: () => import('@/views/Employee/Index.vue')
+				},
+				{
+					path: '/departments',
+					component: () => import('@/views/Department/Index.vue')
 				},
 				{
 					path: '/sprite',

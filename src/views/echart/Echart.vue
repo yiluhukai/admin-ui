@@ -26,14 +26,13 @@ export default {
 				},
 				tooltip: {
 					trigger: "item",
-					//formatter: "{a} <br/>{b}: {c} ({d}%)"
-
-					formatter: function(params) {
-						console.log(params);
-						const content = `<div style="width: 10px;height: 10px;background: ${params.color};
-	border-radius: 50%;display: inline-block;"></div>	  <div>  hello world</div>`;
-						return content;
-					},
+					formatter: "{a} <br/>{b}: {c} ({d}%)",
+					// 				formatter: function(params) {
+					// 					console.log(params);
+					// 					const content = `<div style="width: 10px;height: 10px;background: ${params.color};
+					// border-radius: 50%;display: inline-block;"></div>	  <div>  hello world</div>`;
+					// 					return content;
+					// 				},
 					backgroundColor: "#fff",
 					borderColor: "black",
 					borderWidth: "1px",
@@ -96,6 +95,41 @@ export default {
 
 	computed: {},
 
+	created() {
+		//  响应的数据
+		const res = {
+			result: {
+				event_num: 0,
+				scene_num: {
+					n_scene_num: 14,
+					d_scene_num: 10
+				},
+				alertlevel_num: [],
+				log_type_num: [],
+				day_alarm_num: {
+					"2020-11-22": 0,
+					"2020-11-23": 0,
+					"2020-11-24": 0,
+					"2020-11-25": 0,
+					"2020-11-26": 0,
+					"2020-11-27": 0,
+					"2020-11-28": 0,
+					"2020-11-29": 0
+				}
+			}
+		};
+		// 提取数据中的scene_num
+		const scene_num = res.result.scene_num;
+
+		const data = Object.keys(scene_num).map(key => {
+			return {
+				value: scene_num[key],
+				name: key
+			};
+		});
+
+		this.options.series[0].data = data;
+	},
 	mounted() {
 		this.myChart = echarts.init(document.getElementById("main"));
 		this.setOptions();
