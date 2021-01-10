@@ -1,7 +1,7 @@
 <!--  -->
 <template>
 	<div>
-		<div class="filter-container">
+		<!-- <div class="filter-container">
 			<div class="name item">
 				<el-select
 					v-model="value"
@@ -24,27 +24,27 @@
 					@change="searchList($event, 'type')"
 				></el-date-picker>
 			</div>
-		</div>
-		<BaseTable :tableInfo="tableInfo" :getTableData="getTableList" style="margin-top:50px">
-			<template #salary="{scope}">{{scope.row.salary|fmtMoney}}</template>
+		</div> -->
+		<BaseTable :tableInfo="tableInfo" :getTableData="getTableList">
+			<template #salary="{scope}">{{ scope.row.salary | fmtMoney }}</template>
 		</BaseTable>
 	</div>
 </template>
 
 <script>
-import BaseTable from "@/components/BaseTable";
-import { getEmployeeList } from "@/api/index.js";
+import BaseTable from '@/components/BaseTable'
+import { getEmployeeList } from '@/api/index.js'
 export default {
 	data() {
 		return {
 			tableInfo: {
 				columns: [
-					{ label: "firstName" },
-					{ label: "lastName" },
-					{ label: "email" },
-					{ label: "phoneNumber" },
-					{ label: "salary", slot: true },
-					{ label: "hiredate" }
+					{ label: 'firstName' },
+					{ label: 'lastName' },
+					{ label: 'email' },
+					{ label: 'phoneNumber' },
+					{ label: 'salary', slot: true },
+					{ label: 'hiredate' }
 				],
 				data: [],
 				total: 0,
@@ -53,30 +53,30 @@ export default {
 				currentPage: 1
 			},
 			options: [],
-			value: "",
-			value1: ""
-		};
+			value: '',
+			value1: ''
+		}
 	},
 	components: {
 		BaseTable
 	},
 	methods: {
 		async getTableList() {
-			const { currentPage, pageSize } = this.tableInfo;
+			const { currentPage, pageSize } = this.tableInfo
 			const { list, total } = await getEmployeeList({
 				currentPage,
 				pageSize
-			});
-			this.tableInfo.data = list;
-			this.tableInfo.total = total;
+			})
+			this.tableInfo.data = list
+			this.tableInfo.total = total
 		}
 	},
 	filters: {
 		fmtMoney(val) {
-			return `$${val.toFixed(2)}`;
+			return `$${val.toFixed(2)}`
 		}
 	}
-};
+}
 </script>
 <style scoped>
 /deep/ .el-input--suffix .el-input__inner {

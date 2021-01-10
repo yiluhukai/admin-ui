@@ -1,7 +1,7 @@
 <!--  -->
 <template>
 	<div>
-		<div class="filter-container">
+		<!-- <div class="filter-container">
 			<div class="name item">
 				<el-select
 					v-model="value"
@@ -24,24 +24,19 @@
 					@change="searchList($event, 'type')"
 				></el-date-picker>
 			</div>
-		</div>
+		</div> -->
 		<BaseTable :tableInfo="tableInfo" :getTableData="getTableList"></BaseTable>
 	</div>
 </template>
 
 <script>
-import BaseTable from "@/components/BaseTable";
-import { getDepartmentList } from "@/api/index.js";
+import BaseTable from '@/components/BaseTable'
+import { getDepartmentList } from '@/api/index.js'
 export default {
 	data() {
 		return {
 			tableInfo: {
-				columns: [
-					{ label: "id" },
-					{ label: "departmentName" },
-					{ label: "managerId" },
-					{ label: "locationId" }
-				],
+				columns: [{ label: 'id' }, { label: 'departmentName' }, { label: 'managerId' }, { label: 'locationId' }],
 				data: [],
 				total: 0,
 				pageSize: 10,
@@ -49,25 +44,25 @@ export default {
 				currentPage: 1
 			},
 			options: [],
-			value: "",
-			value1: ""
-		};
+			value: '',
+			value1: ''
+		}
 	},
 	components: {
 		BaseTable
 	},
 	methods: {
 		async getTableList() {
-			const { currentPage, pageSize } = this.tableInfo;
+			const { currentPage, pageSize } = this.tableInfo
 			const { list, total } = await getDepartmentList({
 				currentPage,
 				pageSize
-			});
-			this.tableInfo.data = list;
-			this.tableInfo.total = total;
+			})
+			this.tableInfo.data = list
+			this.tableInfo.total = total
 		}
 	}
-};
+}
 </script>
 <style scoped>
 /deep/ .el-input--suffix .el-input__inner {

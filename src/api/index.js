@@ -15,3 +15,14 @@ export function getDepartmentList(data = {}) {
 		params: data
 	})
 }
+
+export function getJobList(data) {
+	return request.get('/jobs', {
+		params: data
+	})
+}
+
+// 获取平均工资的数据
+export function getAverageSalaryAndCount(data) {
+	return request.post('/employees/queryAverageSalary', data)
+}

@@ -32,6 +32,10 @@ const router = new VueRouter({
 				{
 					path: '/echart',
 					component: () => import('@/views/echart/Echart.vue')
+				},
+				{
+					path: '/jobs',
+					component: () => import('@/views/Jobs/Index.vue')
 				}
 			]
 		}
