@@ -1,18 +1,13 @@
 <!--  -->
 <template>
 	<div class="employee_messages">
-		<div>
-			<EchartForPie :options="countOptions" id="salary"></EchartForPie>
-		</div>
-		<div>
-			<EchartForPie :options="salaryOptions" id="count"></EchartForPie>
-		</div>
-		<div>
-			<EchartForPie :options="countOptionsByRank" id="salaryRank"></EchartForPie>
-		</div>
-		<div>
-			<EchartForPie :options="salaryOptionsByRank" id="countRank"></EchartForPie>
-		</div>
+		<EchartForPie :options="countOptions" id="salary"></EchartForPie>
+
+		<EchartForPie :options="salaryOptions" id="count"></EchartForPie>
+
+		<EchartForPie :options="countOptionsByRank" id="salaryRank"></EchartForPie>
+
+		<EchartForPie :options="salaryOptionsByRank" id="countRank"></EchartForPie>
 	</div>
 </template>
 
@@ -37,10 +32,10 @@ const options = {
 			font: 'bolder 20px "Microsoft YaHei", sans-serif'
 		}
 	},
+	//hover在饼图上的效果
 	tooltip: {
 		trigger: "item",
 		formatter: function(params) {
-			console.log(params);
 			const content = `<div style="width: 10px;height: 10px;background: ${
 				params.color
 			};
@@ -58,12 +53,20 @@ const options = {
 			fontStyle: "normal"
 		}
 	},
+	//图例组件展现了不同系列的标记(symbol)，颜色和名字。可以通过点击图例控制哪些系列不显示。
+	legend: {
+		orient: "vertical",
+		left: "right",
+		top: "center"
+	},
 	//  设置饼状图的颜色
 	//color: ["red", "orange", "yellow", "green", "blue"],
 	series: [
 		{
 			name: "",
 			type: "pie",
+			//表示外半径为可视区尺寸（容器高宽中较小一项）的 20% 长度
+			//环状图串两个 ，饼图穿一个
 			radius: ["50%", "70%"],
 			avoidLabelOverlap: false,
 			label: {
@@ -146,6 +149,7 @@ export default {
 						value: count
 					})
 				);
+				this.countOptionsByRank.series[0].radius = "70%";
 			}
 		}
 	}
@@ -154,7 +158,10 @@ export default {
 <style lang="scss" scoped>
 .employee_messages {
 	display: flex;
-	justify-content: space-around;
 	align-items: center;
+	justify-content: space-between;
+	div {
+		flex: 1 1 auto;
+	}
 }
 </style>

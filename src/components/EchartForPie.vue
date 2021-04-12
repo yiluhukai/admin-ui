@@ -1,12 +1,10 @@
 <template>
-	<div class="echart-container">
-		<div id="main">
-			<div :id="id" style="height:100%"></div>
-		</div>
-	</div>
+	<div :id="id" :style="{height:height,width:width}"></div>
 </template>
 <script>
-const echarts = require('echarts')
+const { debounce } = require("lodash");
+const echarts = require("echarts");
+// const {} = require("lodash");
 export default {
 	props: {
 		options: {
@@ -16,39 +14,60 @@ export default {
 		id: {
 			type: String,
 			required: true
+		},
+		height: {
+			type: String,
+			default: "400px"
+		},
+		width: {
+			type: String,
+			default: "100%"
 		}
 	},
-	mounted() {
-		this.myChart = echarts.init(document.getElementById(this.id))
-		this.setOptions()
+	data() {
+		return {
+			myChart: null
+		};
 	},
-
+	mounted() {
+		this.myChart = echarts.init(document.getElementById(this.id));
+		//this.myChart.showLoading();
+		this.setOptions();
+		this.initListener();
+	},
+	beforeDestroy() {
+		this.destroyListener();
+	},
 	methods: {
 		setOptions() {
 			// 绘制图表
-			this.myChart.setOption(this.options)
+			this.myChart.setOption(this.options);
+		},
+		initListener() {
+			this.$_resizeHandler = debounce(() => {
+				this.resize();
+			}, 100);
+			window.addEventListener("resize", this.$_resizeHandler);
+		},
+		destroyListener() {
+			window.removeEventListener("resize", this.$_resizeHandler);
+			this.$_resizeHandler = null;
+		},
+		resize() {
+			const { myChart } = this;
+			myChart && myChart.resize();
 		}
 	},
 	watch: {
-		'options.series': {
+		"options.series": {
 			//immediate: true,
 			deep: true,
 			handler: function() {
-				console.log('--------------', this.id)
-				this.$nextTick(this.setOptions)
+				this.$nextTick(this.setOptions);
 			}
 		}
 	}
-}
+};
 </script>
 <style lang="scss" scoped>
-.echart-container {
-	//background: #ccc;
-	height: calc(100vh - 100px);
-	#main {
-		width: 400px;
-		height: 400px;
-		// background: red;
-	}
-}
 </style>
