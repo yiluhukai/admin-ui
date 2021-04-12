@@ -1,65 +1,81 @@
 <!--  -->
 <template>
 	<div class="employee_messages">
-		<div><EchartForPie :options="countOptions" id="salary"></EchartForPie></div>
-		<div><EchartForPie :options="salaryOptions" id="count"></EchartForPie></div>
+		<div>
+			<EchartForPie :options="countOptions" id="salary"></EchartForPie>
+		</div>
+		<div>
+			<EchartForPie :options="salaryOptions" id="count"></EchartForPie>
+		</div>
+		<div>
+			<EchartForPie :options="countOptionsByRank" id="salaryRank"></EchartForPie>
+		</div>
+		<div>
+			<EchartForPie :options="salaryOptionsByRank" id="countRank"></EchartForPie>
+		</div>
 	</div>
 </template>
 
 <script>
-import _ from 'lodash'
-import EchartForPie from '@/components/EchartForPie'
-import { getAverageSalaryAndCount } from '@/api'
+import _ from "lodash";
+import EchartForPie from "@/components/EchartForPie";
+import {
+	getAverageSalaryAndCount,
+	getAverageSalaryAndCountByRank
+} from "@/api";
 const options = {
 	//  设置中心位置的文字
 	graphic: {
-		type: 'text',
+		type: "text",
 		z: 2,
 		zlevel: 100,
-		left: 'center',
-		top: 'center',
+		left: "center",
+		top: "center",
 		style: {
-			text: '',
-			fill: '#ccc',
+			text: "",
+			fill: "#ccc",
 			font: 'bolder 20px "Microsoft YaHei", sans-serif'
 		}
 	},
 	tooltip: {
-		trigger: 'item',
+		trigger: "item",
 		formatter: function(params) {
-			console.log(params)
-			const content = `<div style="width: 10px;height: 10px;background: ${params.color};
-						border-radius: 50%;display: inline-block;"></div><span style="margin-left:10px">${params.percent + '%'}</span><div> ${params.name}:${
+			console.log(params);
+			const content = `<div style="width: 10px;height: 10px;background: ${
+				params.color
+			};
+						border-radius: 50%;display: inline-block;"></div><span style="margin-left:10px">${params.percent +
+							"%"}</span><div> ${params.name}:${
 				params.value
-			}</div>`
-			return content
+			}</div>`;
+			return content;
 		},
-		backgroundColor: '#fff',
-		borderColor: 'black',
-		borderWidth: '1px',
+		backgroundColor: "#fff",
+		borderColor: "black",
+		borderWidth: "1px",
 		textStyle: {
-			color: 'black',
-			fontStyle: 'normal'
+			color: "black",
+			fontStyle: "normal"
 		}
 	},
 	//  设置饼状图的颜色
 	//color: ["red", "orange", "yellow", "green", "blue"],
 	series: [
 		{
-			name: '',
-			type: 'pie',
-			radius: ['50%', '70%'],
+			name: "",
+			type: "pie",
+			radius: ["50%", "70%"],
 			avoidLabelOverlap: false,
 			label: {
 				show: false,
-				position: 'center'
+				position: "center"
 			},
 			emphasis: {
 				label: {
 					//  取消hover是中心位置的文字
 					show: false,
-					fontSize: '30',
-					fontWeight: 'bold'
+					fontSize: "30",
+					fontWeight: "bold"
 				}
 			},
 			labelLine: {
@@ -68,14 +84,16 @@ const options = {
 			data: []
 		}
 	]
-}
+};
 
 export default {
 	data() {
 		return {
 			salaryOptions: _.cloneDeep(options),
-			countOptions: _.cloneDeep(options)
-		}
+			countOptions: _.cloneDeep(options),
+			salaryOptionsByRank: _.cloneDeep(options),
+			countOptionsByRank: _.cloneDeep(options)
+		};
 	},
 
 	components: {
@@ -83,28 +101,55 @@ export default {
 	},
 
 	created() {
-		this.fetchStatisticsData()
+		this.fetchStatisticsData();
+		this.fetchAverageSalaryAndCountByRank();
 	},
 	methods: {
 		async fetchStatisticsData() {
-			const data = await getAverageSalaryAndCount()
+			const data = await getAverageSalaryAndCount();
 			if (data && Array.isArray(data)) {
-				this.salaryOptions.graphic.style.text = '部门平均工资'
-				this.salaryOptions.series.name = '平均工资'
-				this.salaryOptions.series[0].data = data.map(({ departmentName, avgSalary }) => ({
-					name: departmentName,
-					value: avgSalary
-				}))
-				this.countOptions.graphic.style.text = '部门人数'
-				this.countOptions.series.name = '部门人数'
-				this.countOptions.series[0].data = data.map(({ count, departmentName }) => ({
-					name: departmentName,
-					value: count
-				}))
+				this.salaryOptions.graphic.style.text = "部门平均工资";
+				this.salaryOptions.series.name = "平均工资";
+				this.salaryOptions.series[0].data = data.map(
+					({ departmentName, avgSalary }) => ({
+						name: departmentName,
+						value: avgSalary
+					})
+				);
+				this.countOptions.graphic.style.text = "部门人数";
+				this.countOptions.series.name = "部门人数";
+				this.countOptions.series[0].data = data.map(
+					({ count, departmentName }) => ({
+						name: departmentName,
+						value: count
+					})
+				);
+			}
+		},
+		async fetchAverageSalaryAndCountByRank() {
+			const data = await getAverageSalaryAndCountByRank();
+			if (data && Array.isArray(data)) {
+				this.salaryOptionsByRank.graphic.style.text =
+					"不同等级平均工资";
+				this.salaryOptionsByRank.series.name = "平均工资";
+				this.salaryOptionsByRank.series[0].data = data.map(
+					({ gradeLevel, avgSalary }) => ({
+						name: gradeLevel,
+						value: avgSalary
+					})
+				);
+				this.countOptionsByRank.graphic.style.text = "不同等级人数";
+				this.countOptionsByRank.series.name = "等级人数";
+				this.countOptionsByRank.series[0].data = data.map(
+					({ count, gradeLevel }) => ({
+						name: gradeLevel,
+						value: count
+					})
+				);
 			}
 		}
 	}
-}
+};
 </script>
 <style lang="scss" scoped>
 .employee_messages {

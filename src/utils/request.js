@@ -47,7 +47,7 @@ instance.interceptors.response.use(
 		const res = response.data
 
 		// if the custom code is not 20000, it is judged as an error.
-		if (res.code !== 0) {
+		if (res.code !== 0 && response.config.responseType !== 'blob') {
 			// Message({
 			// 	message: res.message || 'Error',
 			// 	type: 'error',
@@ -73,6 +73,9 @@ instance.interceptors.response.use(
 			}
 			return Promise.reject(new Error(res.message || 'Error'))
 		} else {
+			if (response.config.responseType === 'blob') {
+				return res
+			}
 			return res.data
 		}
 	},

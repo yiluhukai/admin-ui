@@ -1,3 +1,8 @@
+//@ts-check
+/**
+ * @type { import("@vue/cli-service").ProjectOptions}
+ *
+ */
 module.exports = {
 	devServer: {
 		proxy: {
@@ -10,4 +15,5 @@ module.exports = {
 			}
 		}
 	}
+	//	publicPath 会有提示
 }
